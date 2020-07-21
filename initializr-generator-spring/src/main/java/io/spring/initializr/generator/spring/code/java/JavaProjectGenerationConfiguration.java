@@ -25,6 +25,7 @@ import io.spring.initializr.generator.language.java.JavaSourceCodeWriter;
 import io.spring.initializr.generator.language.java.JavaTypeDeclaration;
 import io.spring.initializr.generator.project.ProjectDescription;
 import io.spring.initializr.generator.project.ProjectGenerationConfiguration;
+import io.spring.initializr.generator.spring.code.ControllerSourceCodeProjectContributor;
 import io.spring.initializr.generator.spring.code.MainApplicationTypeCustomizer;
 import io.spring.initializr.generator.spring.code.MainCompilationUnitCustomizer;
 import io.spring.initializr.generator.spring.code.MainSourceCodeCustomizer;
@@ -66,6 +67,13 @@ public class JavaProjectGenerationConfiguration {
 		return new MainSourceCodeProjectContributor<>(this.description, JavaSourceCode::new,
 				new JavaSourceCodeWriter(this.indentingWriterFactory), mainApplicationTypeCustomizers,
 				mainCompilationUnitCustomizers, mainSourceCodeCustomizers);
+	}
+
+	@Bean
+	public ControllerSourceCodeProjectContributor controllerSourceCodeProjectContributor() {
+
+		return new ControllerSourceCodeProjectContributor(this.description, new JavaSourceCode(),
+				new JavaSourceCodeWriter(this.indentingWriterFactory));
 	}
 
 	@Bean
