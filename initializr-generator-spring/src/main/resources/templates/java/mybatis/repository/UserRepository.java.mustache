@@ -1,0 +1,12 @@
+package {{packageName}}.repository;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import {{packageName}}.dao.dataobject.UserDO;
+
+public interface UserRepository extends JpaRepository<UserDO, Long> {
+
+	UserDO getByName(String name);
+
+	UserDO getById(Long id);
+}
