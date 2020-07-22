@@ -17,13 +17,9 @@
 package io.spring.initializr.generator.spring.code.java;
 
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.HashMap;
-import java.util.Map;
 
 import io.spring.initializr.generator.io.template.TemplateRenderer;
-import io.spring.initializr.generator.language.SourceStructure;
 import io.spring.initializr.generator.project.ProjectDescription;
 import io.spring.initializr.generator.project.contributor.ProjectContributor;
 
@@ -38,7 +34,7 @@ public class DataJpaSourceCodeJavaProjectContributor implements ProjectContribut
 
 	private final TemplateRenderer templateRenderer;
 
-	private final String templateRoot = "java/jpa";
+	private final JavaTemplateRenderer javaTemplateRenderer = () -> "jpa";
 
 	public DataJpaSourceCodeJavaProjectContributor(ProjectDescription description, TemplateRenderer templateRenderer) {
 		this.description = description;
@@ -56,38 +52,24 @@ public class DataJpaSourceCodeJavaProjectContributor implements ProjectContribut
 	}
 
 	private void buildEntity(Path projectRoot) throws IOException {
-		String subPackageName = "dao.dataobject";
+		String subPackage = "dao.dataobject";
 		String templateName = "UserDO";
-		render(this.description, this.templateRenderer, projectRoot, subPackageName, templateName);
+		this.javaTemplateRenderer.render(this.description, this.templateRenderer, projectRoot, subPackage,
+				templateName);
 	}
 
 	private void buildRepository(Path projectRoot) throws IOException {
-		String subPackageName = "repository";
+		String subPackage = "repository";
 		String templateName = "UserRepository";
-		render(this.description, this.templateRenderer, projectRoot, subPackageName, templateName);
+		this.javaTemplateRenderer.render(this.description, this.templateRenderer, projectRoot, subPackage,
+				templateName);
 	}
 
 	private void buildService(Path projectRoot) throws IOException {
-		String subPackageName = "service";
+		String subPackage = "service";
 		String templateName = "UserServiceImpl";
-		render(this.description, this.templateRenderer, projectRoot, subPackageName, templateName);
-	}
-
-	private void render(ProjectDescription description, TemplateRenderer templateRenderer, Path projectRoot,
-			String subPackageName, String templateName) throws IOException {
-
-		SourceStructure sourceStructure = description.getBuildSystem().getMainSource(projectRoot,
-				description.getLanguage());
-		String packaging = description.getPackageName() + "." + subPackageName;
-		Path sourceCodePath = sourceStructure.createSourceFile(packaging, templateName);
-
-		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("packageName", description.getPackageName());
-		String template = this.templateRoot + "/" + subPackageName.replace(".", "/") + "/" + templateName + ".java";
-		// 渲染模板
-		String code = templateRenderer.render(template, params);
-
-		Files.write(sourceCodePath, code.getBytes("UTF-8"));
+		this.javaTemplateRenderer.render(this.description, this.templateRenderer, projectRoot, subPackage,
+				templateName);
 	}
 
 }

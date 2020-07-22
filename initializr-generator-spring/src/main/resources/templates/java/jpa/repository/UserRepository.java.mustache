@@ -1,8 +1,8 @@
-package {{packageName}}.repository;
+package {{rootPackage}}.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import {{packageName}}.dao.dataobject.UserDO;
+import {{rootPackage}}.dao.dataobject.UserDO;
 
 public interface UserRepository extends JpaRepository<UserDO, Long> {
 

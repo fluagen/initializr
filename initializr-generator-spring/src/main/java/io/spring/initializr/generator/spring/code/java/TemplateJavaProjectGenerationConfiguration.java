@@ -47,8 +47,8 @@ public class TemplateJavaProjectGenerationConfiguration {
 
 	@Bean
 	@ConditionalOnRequestedDependency("web")
-	public ControllerSourceCodeJavaProjectContributor controllerContributor() {
-		return new ControllerSourceCodeJavaProjectContributor(this.description, this.templateRenderer);
+	public WebSourceCodeJavaProjectContributor controllerContributor() {
+		return new WebSourceCodeJavaProjectContributor(this.description, this.templateRenderer);
 	}
 
 	@Bean

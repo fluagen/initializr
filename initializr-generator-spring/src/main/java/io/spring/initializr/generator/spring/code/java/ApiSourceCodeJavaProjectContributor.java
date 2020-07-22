@@ -16,13 +16,9 @@
 package io.spring.initializr.generator.spring.code.java;
 
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.HashMap;
-import java.util.Map;
 
 import io.spring.initializr.generator.io.template.TemplateRenderer;
-import io.spring.initializr.generator.language.SourceStructure;
 import io.spring.initializr.generator.project.ProjectDescription;
 import io.spring.initializr.generator.project.contributor.ProjectContributor;
 
@@ -37,7 +33,7 @@ public class ApiSourceCodeJavaProjectContributor implements ProjectContributor {
 
 	private final TemplateRenderer templateRenderer;
 
-	private final String templateRoot = "java/provider";
+	private final JavaTemplateRenderer javaTemplateRenderer = () -> "provider";
 
 	public ApiSourceCodeJavaProjectContributor(ProjectDescription description, TemplateRenderer templateRenderer) {
 
@@ -48,37 +44,21 @@ public class ApiSourceCodeJavaProjectContributor implements ProjectContributor {
 	@Override
 	public void contribute(Path projectRoot) throws IOException {
 		buildModel(projectRoot);
-
 		buildApi(projectRoot);
 	}
 
 	private void buildModel(Path projectRoot) throws IOException {
-		String subPackageName = "model";
+		String subPackage = "model";
 		String templateName = "UserModel";
-		render(this.description, this.templateRenderer, projectRoot, subPackageName, templateName);
+		this.javaTemplateRenderer.render(this.description, this.templateRenderer, projectRoot, subPackage,
+				templateName);
 	}
 
 	private void buildApi(Path projectRoot) throws IOException {
-		String subPackageName = "api";
+		String subPackage = "api";
 		String templateName = "UserService";
-		render(this.description, this.templateRenderer, projectRoot, subPackageName, templateName);
-	}
-
-	private void render(ProjectDescription description, TemplateRenderer templateRenderer, Path projectRoot,
-			String subPackageName, String templateName) throws IOException {
-
-		SourceStructure sourceStructure = description.getBuildSystem().getMainSource(projectRoot,
-				description.getLanguage());
-		String packaging = description.getPackageName() + "." + subPackageName;
-		Path sourceCodePath = sourceStructure.createSourceFile(packaging, templateName);
-
-		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("packageName", description.getPackageName());
-		String template = this.templateRoot + "/" + subPackageName.replace(".", "/") + "/" + templateName + ".java";
-		// 渲染模板
-		String code = templateRenderer.render(template, params);
-
-		Files.write(sourceCodePath, code.getBytes("UTF-8"));
+		this.javaTemplateRenderer.render(this.description, this.templateRenderer, projectRoot, subPackage,
+				templateName);
 	}
 
 }

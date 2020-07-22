@@ -17,13 +17,9 @@
 package io.spring.initializr.generator.spring.code.java;
 
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.HashMap;
-import java.util.Map;
 
 import io.spring.initializr.generator.io.template.TemplateRenderer;
-import io.spring.initializr.generator.language.SourceStructure;
 import io.spring.initializr.generator.project.ProjectDescription;
 import io.spring.initializr.generator.project.contributor.ProjectContributor;
 
@@ -32,32 +28,25 @@ import io.spring.initializr.generator.project.contributor.ProjectContributor;
  *
  * @author Jayce Ma
  */
-public class ControllerSourceCodeJavaProjectContributor implements ProjectContributor {
+public class WebSourceCodeJavaProjectContributor implements ProjectContributor {
 
 	private final ProjectDescription description;
 
 	private final TemplateRenderer templateRenderer;
 
-	public ControllerSourceCodeJavaProjectContributor(ProjectDescription description,
-			TemplateRenderer templateRenderer) {
+	private final JavaTemplateRenderer javaTemplateRenderer = () -> "web";
+
+	public WebSourceCodeJavaProjectContributor(ProjectDescription description, TemplateRenderer templateRenderer) {
 		this.description = description;
 		this.templateRenderer = templateRenderer;
 	}
 
 	@Override
 	public void contribute(Path projectRoot) throws IOException {
-		SourceStructure sourceStructure = this.description.getBuildSystem().getMainSource(projectRoot,
-				this.description.getLanguage());
-		String packaging = this.description.getPackageName() + ".controller";
-		Path sourceCodePath = sourceStructure.createSourceFile(packaging, "HelloController");
-
-		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("packageName", this.description.getPackageName());
-		String templateName = "java/web/controller/HelloController.java";
-		// 渲染模板
-		String code = this.templateRenderer.render(templateName, params);
-
-		Files.write(sourceCodePath, code.getBytes("UTF-8"));
+		String subPackage = "controller";
+		String templateName = "HelloController";
+		this.javaTemplateRenderer.render(this.description, this.templateRenderer, projectRoot, subPackage,
+				templateName);
 	}
 
 }

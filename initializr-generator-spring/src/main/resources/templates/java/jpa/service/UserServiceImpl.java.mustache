@@ -1,13 +1,13 @@
-package {{packageName}}.service;
+package {{rootPackage}}.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cglib.beans.BeanCopier;
 import org.springframework.stereotype.Service;
 
-import {{packageName}}.dao.dataobject.UserDO;
-import {{packageName}}.repository.UserRepository;
-import {{packageName}}.api.UserService;
-import {{packageName}}.model.UserModel;
+import {{rootPackage}}.dao.dataobject.UserDO;
+import {{rootPackage}}.repository.UserRepository;
+import {{rootPackage}}.api.UserService;
+import {{rootPackage}}.model.UserModel;
 
 @Service
 public class UserServiceImpl implements UserService {
