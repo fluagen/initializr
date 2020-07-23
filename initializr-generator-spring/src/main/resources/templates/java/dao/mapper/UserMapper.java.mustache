@@ -1,0 +1,42 @@
+package {{rootPackage}}.dao.mapper;
+
+import java.util.List;
+
+import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Result;
+import org.apache.ibatis.annotations.Results;
+import org.apache.ibatis.annotations.Select;
+
+import {{rootPackage}}.dao.dataobject.UserDO;
+
+@Mapper
+public interface UserMapper {
+    
+    @Select("SELECT * FROM users")
+    @Results({
+        @Result(property = "loginId",  column = "login_id"),
+        @Result(property = "name",  column = "name"),
+        @Result(property = "age", column = "age", javaType = Integer.class)
+    })
+    List<UserDO> getAll();
+
+    @Select("SELECT * FROM users WHERE id = #{id}")
+    @Results({
+        @Result(property = "loginId",  column = "login_id"),
+        @Result(property = "name",  column = "name"),
+        @Result(property = "age", column = "age", javaType = Integer.class)
+    })
+    UserDO getById(Long id);
+    
+    @Select("SELECT * FROM users WHERE login_id = #{loginId}")
+    @Results({
+        @Result(property = "loginId",  column = "login_id"),
+        @Result(property = "name",  column = "name"),
+        @Result(property = "age", column = "age", javaType = Integer.class)
+    })
+    UserDO getByLoginId(String loginId);
+
+    @Insert("INSERT INTO users(name,age) VALUES(#{name}, #{age})")
+    Long save(UserDO userDO);
+}

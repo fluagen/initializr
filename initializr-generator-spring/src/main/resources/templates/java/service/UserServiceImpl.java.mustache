@@ -1,0 +1,64 @@
+package {{rootPackage}}.service;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.beans.BeanCopier;
+import org.springframework.stereotype.Service;
+
+import {{rootPackage}}.api.UserService;
+import {{rootPackage}}.api.model.UserModel;
+import {{rootPackage}}.dao.dataobject.UserDO;
+{{#isJpa}}
+import {{rootPackage}}.repository.UserRepository;
+{{/isJpa}}
+{{#isMybatis}}
+import {{rootPackage}}.dao.mapper.UserMapper;
+{{/isMybatis}}
+
+@Service
+public class UserServiceImpl implements UserService {
+
+	{{#isJpa}}
+    @Autowired
+	UserRepository repo;
+    {{/isJpa}}
+
+    {{#isMybatis}}
+    @Autowired
+    UserMapper userMapper;
+    {{/isMybatis}}
+
+    private static final BeanCopier copier = BeanCopier.create(UserModel.class, UserDO.class, false);
+
+    {{#isJpa}}
+    public String getUserName(String loginId) {
+        UserDO userDO = repo.findByLoginId(loginId);
+        return userDO != null ? userDO.getName() : null;
+    }
+
+    public UserModel addUser(UserModel user) {
+        UserDO userDO = new UserDO();
+        repo.save(userDO);
+        
+        copier.copy(user, userDO, null);
+        
+        return user;
+    }
+    {{/isJpa}}
+
+    {{#isMybatis}}
+    public String getUserName(String loginId) {
+        UserDO userDO = userMapper.getByLoginId(loginId);
+        return userDO != null ? userDO.getName() : null;
+    }
+    
+    public UserModel addUser(UserModel user) {
+        UserDO userDO = new UserDO();
+        userMapper.save(userDO);
+        
+        copier.copy(user, userDO, null);
+        
+        return user;
+    }
+    {{/isMybatis}}
+
+}

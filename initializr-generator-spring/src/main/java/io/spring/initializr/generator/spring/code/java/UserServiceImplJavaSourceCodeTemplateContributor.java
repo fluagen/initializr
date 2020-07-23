@@ -13,40 +13,51 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package io.spring.initializr.generator.spring.code.java;
 
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.HashMap;
+import java.util.Map;
 
+import io.spring.initializr.generator.buildsystem.Dependency;
 import io.spring.initializr.generator.io.template.TemplateRenderer;
 import io.spring.initializr.generator.project.ProjectDescription;
 import io.spring.initializr.generator.project.contributor.ProjectContributor;
 
 /**
- * {@link ProjectContributor} for the web controller source code in java language.
+ * {@link ProjectContributor} for the api model source code in java language.
  *
  * @author Jayce Ma
  */
-public class WebSourceCodeJavaProjectContributor implements ProjectContributor {
+public class UserServiceImplJavaSourceCodeTemplateContributor implements ProjectContributor {
 
 	private final ProjectDescription description;
 
 	private final TemplateRenderer templateRenderer;
 
-	private final JavaTemplateRenderer javaTemplateRenderer = () -> "web";
-
-	public WebSourceCodeJavaProjectContributor(ProjectDescription description, TemplateRenderer templateRenderer) {
+	public UserServiceImplJavaSourceCodeTemplateContributor(ProjectDescription description,
+			TemplateRenderer templateRenderer) {
 		this.description = description;
 		this.templateRenderer = templateRenderer;
 	}
 
 	@Override
 	public void contribute(Path projectRoot) throws IOException {
-		String subPackage = "controller";
-		String templateName = "HelloController";
-		this.javaTemplateRenderer.render(this.description, this.templateRenderer, projectRoot, subPackage,
-				templateName);
+		String templateName = "UserServiceImpl";
+		String subPackage = "service";
+
+		Map<String, Dependency> dependencies = this.description.getRequestedDependencies();
+		Map<String, Object> params = new HashMap<>();
+		if (dependencies.containsKey("mybatis")) {
+			params.put("isMybatis", true);
+		}else if (dependencies.containsKey("data-jpa")) {
+			params.put("isJpa", true);
+		}
+
+		JavaTemplateHelper.render(this.description, this.templateRenderer, projectRoot, subPackage, templateName,
+				params);
+
 	}
 
 }

@@ -1,10 +1,10 @@
 package {{rootPackage}}.api;
 
-import {{rootPackage}}.model.UserModel;
+import {{rootPackage}}.api.model.UserModel;
 
 public interface UserService {
 
-	String getUserName(Long id);
+	String getUserName(String loginId);
 
 	UserModel addUser(UserModel user);
 }

@@ -17,48 +17,40 @@ package io.spring.initializr.generator.spring.code.java;
 
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.HashMap;
+import java.util.Map;
 
 import io.spring.initializr.generator.io.template.TemplateRenderer;
 import io.spring.initializr.generator.project.ProjectDescription;
 import io.spring.initializr.generator.project.contributor.ProjectContributor;
 
 /**
- * {@link ProjectContributor} for the data-jpa source code in java language.
+ * {@link ProjectContributor} for the api model source code in java language.
  *
  * @author Jayce Ma
  */
-public class ApiSourceCodeJavaProjectContributor implements ProjectContributor {
+public class UserMapperJavaSourceCodeTemplateContributor implements ProjectContributor {
 
 	private final ProjectDescription description;
 
 	private final TemplateRenderer templateRenderer;
 
-	private final JavaTemplateRenderer javaTemplateRenderer = () -> "provider";
-
-	public ApiSourceCodeJavaProjectContributor(ProjectDescription description, TemplateRenderer templateRenderer) {
-
+	public UserMapperJavaSourceCodeTemplateContributor(ProjectDescription description,
+			TemplateRenderer templateRenderer) {
 		this.description = description;
 		this.templateRenderer = templateRenderer;
 	}
 
 	@Override
 	public void contribute(Path projectRoot) throws IOException {
-		buildModel(projectRoot);
-		buildApi(projectRoot);
-	}
+		String templateName = "UserMapper";
+		String subPackage = "dao.mapper";
 
-	private void buildModel(Path projectRoot) throws IOException {
-		String subPackage = "model";
-		String templateName = "UserModel";
-		this.javaTemplateRenderer.render(this.description, this.templateRenderer, projectRoot, subPackage,
-				templateName);
-	}
+		Map<String, Object> params = new HashMap<>();
+		params.put("isMybatis", true);
 
-	private void buildApi(Path projectRoot) throws IOException {
-		String subPackage = "api";
-		String templateName = "UserService";
-		this.javaTemplateRenderer.render(this.description, this.templateRenderer, projectRoot, subPackage,
-				templateName);
+		JavaTemplateHelper.render(this.description, this.templateRenderer, projectRoot, subPackage, templateName,
+				params);
 	}
 
 }

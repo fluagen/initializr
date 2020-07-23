@@ -1,23 +1,22 @@
-package {{packageName}}.dataobject;
+package {{rootPackage}}.api.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-
-@Entity
-public class UserDO {
+public class UserModel {
     private Long id;
+    private String loginId;
     private String name;
     private Integer age;
     
-    @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
 	public Long getId() {
 		return id;
 	}
 	public void setId(Long id) {
 		this.id = id;
+	}
+	public String getLoginId() {
+		return loginId;
+	}
+	public void setLoginId(String loginId) {
+		this.loginId = loginId;
 	}
 	public String getName() {
 		return name;

@@ -16,42 +16,42 @@
 package io.spring.initializr.generator.spring.code.java;
 
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
 
 import io.spring.initializr.generator.io.template.TemplateRenderer;
-import io.spring.initializr.generator.language.SourceStructure;
 import io.spring.initializr.generator.project.ProjectDescription;
+import io.spring.initializr.generator.project.contributor.ProjectContributor;
 
 /**
- * Callback for customizing the java's template.
+ * {@link ProjectContributor} for the api model source code in java language.
  *
  * @author Jayce Ma
  */
-@FunctionalInterface
-public interface JavaTemplateRenderer {
+public class UserRepositoryJavaSourceCodeTemplateContributor implements ProjectContributor {
 
-	String customize();
+	private final ProjectDescription description;
 
-	default void render(ProjectDescription description, TemplateRenderer templateRenderer, Path projectRoot,
-			String subPackage, String templateName) throws IOException {
-		SourceStructure sourceStructure = description.getBuildSystem().getMainSource(projectRoot,
-				description.getLanguage());
-		String packaging = description.getPackageName() + "." + subPackage;
-		Path sourceCodePath = sourceStructure.createSourceFile(packaging, templateName);
+	private final TemplateRenderer templateRenderer;
 
-		String templatePath = customize();
+	public UserRepositoryJavaSourceCodeTemplateContributor(ProjectDescription description,
+			TemplateRenderer templateRenderer) {
+		this.description = description;
+		this.templateRenderer = templateRenderer;
+	}
+
+	@Override
+	public void contribute(Path projectRoot) throws IOException {
+		String templateName = "UserRepository";
+		String subPackage = "repository";
 
 		Map<String, Object> params = new HashMap<>();
-		params.put("rootPackage", description.getPackageName());
-		String template = "java/" + templatePath + "/" + subPackage.replaceAll("\\.", "/") + "/" + templateName
-				+ ".java";
+		params.put("isJpa", true);
 
-		String code = templateRenderer.render(template, params);
+		JavaTemplateHelper.render(this.description, this.templateRenderer, projectRoot, subPackage, templateName,
+				params);
 
-		Files.write(sourceCodePath, code.getBytes("UTF-8"));
 	}
 
 }

@@ -13,63 +13,41 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package io.spring.initializr.generator.spring.code.java;
 
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.HashMap;
 
 import io.spring.initializr.generator.io.template.TemplateRenderer;
 import io.spring.initializr.generator.project.ProjectDescription;
 import io.spring.initializr.generator.project.contributor.ProjectContributor;
 
 /**
- * {@link ProjectContributor} for the data-jpa source code in java language.
+ * {@link ProjectContributor} for the web controller source code in java language.
  *
  * @author Jayce Ma
  */
-public class DataJpaSourceCodeJavaProjectContributor implements ProjectContributor {
+public class HelloControllerJavaSourceCodeTemplateContributor implements ProjectContributor {
 
 	private final ProjectDescription description;
 
 	private final TemplateRenderer templateRenderer;
 
-	private final JavaTemplateRenderer javaTemplateRenderer = () -> "jpa";
-
-	public DataJpaSourceCodeJavaProjectContributor(ProjectDescription description, TemplateRenderer templateRenderer) {
+	public HelloControllerJavaSourceCodeTemplateContributor(ProjectDescription description,
+			TemplateRenderer templateRenderer) {
 		this.description = description;
 		this.templateRenderer = templateRenderer;
 	}
 
 	@Override
 	public void contribute(Path projectRoot) throws IOException {
+		String templateName = "HelloController";
+		String subPackage = "controller";
 
-		buildEntity(projectRoot);
+		JavaTemplateHelper.render(this.description, this.templateRenderer, projectRoot, subPackage, templateName,
+				new HashMap<>());
 
-		buildRepository(projectRoot);
-
-		buildService(projectRoot);
-	}
-
-	private void buildEntity(Path projectRoot) throws IOException {
-		String subPackage = "dao.dataobject";
-		String templateName = "UserDO";
-		this.javaTemplateRenderer.render(this.description, this.templateRenderer, projectRoot, subPackage,
-				templateName);
-	}
-
-	private void buildRepository(Path projectRoot) throws IOException {
-		String subPackage = "repository";
-		String templateName = "UserRepository";
-		this.javaTemplateRenderer.render(this.description, this.templateRenderer, projectRoot, subPackage,
-				templateName);
-	}
-
-	private void buildService(Path projectRoot) throws IOException {
-		String subPackage = "service";
-		String templateName = "UserServiceImpl";
-		this.javaTemplateRenderer.render(this.description, this.templateRenderer, projectRoot, subPackage,
-				templateName);
 	}
 
 }

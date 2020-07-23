@@ -6,7 +6,6 @@ import {{rootPackage}}.dao.dataobject.UserDO;
 
 public interface UserRepository extends JpaRepository<UserDO, Long> {
 
-	UserDO getByName(String name);
-
-	UserDO getById(Long id);
+	UserDO findByLoginId(String loginId);
+	
 }

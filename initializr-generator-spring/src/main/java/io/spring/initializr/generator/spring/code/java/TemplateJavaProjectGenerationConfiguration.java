@@ -47,20 +47,40 @@ public class TemplateJavaProjectGenerationConfiguration {
 
 	@Bean
 	@ConditionalOnRequestedDependency("web")
-	public WebSourceCodeJavaProjectContributor controllerContributor() {
-		return new WebSourceCodeJavaProjectContributor(this.description, this.templateRenderer);
+	public HelloControllerJavaSourceCodeTemplateContributor helloControllerContributor() {
+		return new HelloControllerJavaSourceCodeTemplateContributor(this.description, this.templateRenderer);
+	}
+
+	@Bean
+	public UserModelJavaSourceCodeTemplateContributor userModelContributor() {
+		return new UserModelJavaSourceCodeTemplateContributor(this.description, this.templateRenderer);
+	}
+
+	@Bean
+	public UserServiceJavaSourceCodeTemplateContributor userServiceContributor() {
+		return new UserServiceJavaSourceCodeTemplateContributor(this.description, this.templateRenderer);
+	}
+
+	@Bean
+	public UserServiceImplJavaSourceCodeTemplateContributor userServiceImplContributor() {
+		return new UserServiceImplJavaSourceCodeTemplateContributor(this.description, this.templateRenderer);
 	}
 
 	@Bean
 	@ConditionalOnRequestedDependency("data-jpa")
-	public DataJpaSourceCodeJavaProjectContributor repositoryContributor() {
-		return new DataJpaSourceCodeJavaProjectContributor(this.description, this.templateRenderer);
+	public UserRepositoryJavaSourceCodeTemplateContributor userRepositoryContributor() {
+		return new UserRepositoryJavaSourceCodeTemplateContributor(this.description, this.templateRenderer);
 	}
 
 	@Bean
-	@ConditionalOnRequestedDependency("data-jpa")
-	public ApiSourceCodeJavaProjectContributor apiContributor() {
-		return new ApiSourceCodeJavaProjectContributor(this.description, this.templateRenderer);
+	public UserDOJavaSourceCodeTemplateContributor userDOContributor() {
+		return new UserDOJavaSourceCodeTemplateContributor(this.description, this.templateRenderer);
+	}
+
+	@Bean
+	@ConditionalOnRequestedDependency("mybatis")
+	public UserMapperJavaSourceCodeTemplateContributor userMapperContributor() {
+		return new UserMapperJavaSourceCodeTemplateContributor(this.description, this.templateRenderer);
 	}
 
 }
