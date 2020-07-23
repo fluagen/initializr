@@ -48,6 +48,13 @@ public class DefaultMavenBuildCustomizer implements BuildCustomizer<MavenBuild> 
 		build.properties().property("java.version", this.description.getLanguage().jvmVersion());
 		build.plugins().add("org.springframework.boot", "spring-boot-maven-plugin");
 
+		if (this.description.getRequestedDependencies().containsKey("mybatis")) {
+			build.plugins().add("org.mybatis.generator", "mybatis-generator-maven-plugin", (plugin) -> {
+				plugin.version("1.4.0");
+				plugin.dependency("mysql", "mysql-connector-java", "${mysql.version}");
+			});
+		}
+
 		Maven maven = this.metadata.getConfiguration().getEnv().getMaven();
 		String springBootVersion = this.description.getPlatformVersion().toString();
 		ParentPom parentPom = maven.resolveParentPom(springBootVersion);
