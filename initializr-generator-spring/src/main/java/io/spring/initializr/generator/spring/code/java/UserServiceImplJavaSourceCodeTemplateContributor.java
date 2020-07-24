@@ -54,10 +54,7 @@ public class UserServiceImplJavaSourceCodeTemplateContributor implements Project
 	public void contribute(Path projectRoot) throws IOException {
 		Map<String, Dependency> dependencies = this.description.getRequestedDependencies();
 		Map<String, Object> params = new HashMap<>();
-		if (dependencies.containsKey("mybatis")) {
-			params.put("hasMybatisDependency", true);
-		}
-		else if (dependencies.containsKey("data-jpa")) {
+		if (dependencies.containsKey("data-jpa")) {
 			params.put("hasDataJpaDependency", true);
 		}
 		else {

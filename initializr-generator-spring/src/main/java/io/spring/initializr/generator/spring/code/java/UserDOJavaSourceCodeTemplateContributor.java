@@ -54,10 +54,7 @@ public class UserDOJavaSourceCodeTemplateContributor implements ProjectContribut
 		Map<String, Dependency> dependencies = this.description.getRequestedDependencies();
 		Map<String, Object> params = new HashMap<>();
 		if (dependencies.containsKey("data-jpa")) {
-			params.put("hasDataJapDependency", true);
-		}
-		else if (dependencies.containsKey("mybatis")) {
-			params.put("hasMybatisDependency", true);
+			params.put("hasDataJpaDependency", true);
 		}
 
 		if (params.isEmpty()) {

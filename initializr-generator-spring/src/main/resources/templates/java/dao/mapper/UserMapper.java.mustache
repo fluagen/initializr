@@ -13,7 +13,7 @@ import {{rootPackage}}.dao.dataobject.UserDO;
 @Mapper
 public interface UserMapper {
     
-    @Select("SELECT * FROM users")
+    @Select("SELECT * FROM t_users")
     @Results({
         @Result(property = "loginId",  column = "login_id"),
         @Result(property = "name",  column = "name"),
@@ -21,7 +21,7 @@ public interface UserMapper {
     })
     List<UserDO> getAll();
 
-    @Select("SELECT * FROM users WHERE id = #{id}")
+    @Select("SELECT * FROM t_users WHERE id = #{id}")
     @Results({
         @Result(property = "loginId",  column = "login_id"),
         @Result(property = "name",  column = "name"),
@@ -29,7 +29,7 @@ public interface UserMapper {
     })
     UserDO getById(Long id);
     
-    @Select("SELECT * FROM users WHERE login_id = #{loginId}")
+    @Select("SELECT * FROM t_users WHERE login_id = #{loginId}")
     @Results({
         @Result(property = "loginId",  column = "login_id"),
         @Result(property = "name",  column = "name"),
@@ -37,6 +37,6 @@ public interface UserMapper {
     })
     UserDO getByLoginId(String loginId);
 
-    @Insert("INSERT INTO users(name,age) VALUES(#{name}, #{age})")
-    Long save(UserDO userDO);
+    @Insert("INSERT INTO t_users(name,age) VALUES(#{name}, #{age})")
+    void insert(UserDO userDO);
 }

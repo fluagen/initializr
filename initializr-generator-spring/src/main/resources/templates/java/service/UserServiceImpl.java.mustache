@@ -1,12 +1,11 @@
 package {{rootPackage}}.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cglib.beans.BeanCopier;
-import org.springframework.stereotype.Service;
-
 import {{rootPackage}}.api.UserService;
 import {{rootPackage}}.api.model.UserModel;
+import org.springframework.stereotype.Service;
 {{#hasDataJpaDependency}}
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.beans.BeanCopier;
 import {{rootPackage}}.dao.dataobject.UserDO;
 import {{rootPackage}}.repository.UserRepository;
 {{/hasDataJpaDependency}}
@@ -20,7 +19,6 @@ public class UserServiceImpl implements UserService {
     {{/hasDataJpaDependency}}
 
     {{#notDependency}}
-
     public String getUserName(String loginId) {
         return null;
     }
@@ -40,10 +38,9 @@ public class UserServiceImpl implements UserService {
 
     public UserModel addUser(UserModel user) {
         UserDO userDO = new UserDO();
-        repo.save(userDO);
-        
         copier.copy(user, userDO, null);
-        
+
+        repo.save(userDO);
         return user;
     }
     {{/hasDataJpaDependency}}

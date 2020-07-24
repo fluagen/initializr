@@ -77,10 +77,4 @@ public class TemplateJavaProjectGenerationConfiguration {
 		return new UserDOJavaSourceCodeTemplateContributor(this.description, this.templateRenderer);
 	}
 
-	@Bean
-	@ConditionalOnRequestedDependency("mybatis")
-	public UserMapperJavaSourceCodeTemplateContributor userMapperContributor() {
-		return new UserMapperJavaSourceCodeTemplateContributor(this.description, this.templateRenderer);
-	}
-
 }

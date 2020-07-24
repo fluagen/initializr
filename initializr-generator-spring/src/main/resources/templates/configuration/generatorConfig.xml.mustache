@@ -21,7 +21,7 @@
             <property name="enableSubPackages" value="false"/>
         </javaClientGenerator>
         
-        <table domainObjectName="UserDO" schema="public" tableName="t_users">
+        <table domainObjectName="UserDO" mapperName="UserMapper" schema="public" tableName="t_users">
             <generatedKey column="id" identity="true" sqlStatement="JDBC"/>
         </table>
     </context>

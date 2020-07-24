@@ -30,14 +30,14 @@ import io.spring.initializr.generator.project.contributor.ProjectContributor;
 import org.springframework.util.FileCopyUtils;
 
 /**
- * {@link ProjectContributor} that contributes a single file, identified by a resource
- * pattern, to a generated project.
+ * {@link ProjectContributor} that contributes mybatis-config.xml file to a generated
+ * project.
  *
- * @author Andy Wilkinson
+ * @author Jayce Ma
  */
 public class MybatisConfigXMLTemplateContributor implements ProjectContributor {
 
-	private final String relativePath = "src/main/resources/mybatis-config.xml";
+	private final String relativePath = "src/main/resources/mybatis/mybatis-config.xml";
 
 	private final String resourcePattern = "configuration/mybatis-config.xml";
 

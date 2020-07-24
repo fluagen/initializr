@@ -16,6 +16,7 @@
 
 package io.spring.initializr.generator.spring.configuration;
 
+import io.spring.initializr.generator.condition.ConditionalOnRequestedDependency;
 import io.spring.initializr.generator.io.template.TemplateRenderer;
 import io.spring.initializr.generator.project.ProjectDescription;
 import io.spring.initializr.generator.project.ProjectGenerationConfiguration;
@@ -25,7 +26,7 @@ import org.springframework.context.annotation.Bean;
 /**
  * Temaplate configuration for application-related contributions to a generated project.
  *
- * @author Stephane Nicoll
+ * @author Jayce Ma
  */
 @ProjectGenerationConfiguration
 public class TemplateConfiguationProjectGenerationConfiguration {
@@ -46,11 +47,7 @@ public class TemplateConfiguationProjectGenerationConfiguration {
 	}
 
 	@Bean
-	MybatisConfigXMLTemplateContributor mybatisConfigXMLContributor() {
-		return new MybatisConfigXMLTemplateContributor(this.description, this.templateRenderer);
-	}
-
-	@Bean
+	@ConditionalOnRequestedDependency("mybatis")
 	GeneratorConfigXMLTemplateContributor mybatisGeneratorConfigXMLContributor() {
 		return new GeneratorConfigXMLTemplateContributor(this.description, this.templateRenderer);
 	}

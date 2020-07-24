@@ -31,10 +31,10 @@ import io.spring.initializr.generator.project.contributor.ProjectContributor;
 import org.springframework.util.FileCopyUtils;
 
 /**
- * {@link ProjectContributor} that contributes a single file, identified by a resource
- * pattern, to a generated project.
+ * {@link ProjectContributor} that contributes application.properties file to a generated
+ * project.
  *
- * @author Andy Wilkinson
+ * @author Jayce Ma
  */
 public class ApplicationPropertiesTemplateContributor implements ProjectContributor {
 
@@ -65,6 +65,9 @@ public class ApplicationPropertiesTemplateContributor implements ProjectContribu
 		Map<String, Dependency> dependencies = this.description.getRequestedDependencies();
 		if (dependencies.containsKey("mysql")) {
 			params.put("hasMysqlDependency", true);
+		}
+		if (dependencies.containsKey("mybatis")) {
+			params.put("hasMybatisDependency", true);
 		}
 		String code = this.templateRenderer.render(template, params);
 

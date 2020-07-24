@@ -2,13 +2,16 @@ package {{rootPackage}}.dao.dataobject;
 
 {{#hasDataJpaDependency}}
 import javax.persistence.Entity;
-{{/hasDataJpaDependency}}
+import javax.persistence.Table;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+{{/hasDataJpaDependency}}
+
 
 {{#hasDataJpaDependency}}
 @Entity
+@Table(name = "t_users")
 {{/hasDataJpaDependency}}
 public class UserDO {
     private Long id;
@@ -16,8 +19,10 @@ public class UserDO {
     private String name;
     private Integer age;
     
+    {{#hasDataJpaDependency}}
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
+    {{/hasDataJpaDependency}}
 	public Long getId() {
 		return id;
 	}

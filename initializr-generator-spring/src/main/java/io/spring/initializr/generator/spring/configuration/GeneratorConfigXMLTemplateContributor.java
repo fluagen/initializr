@@ -30,10 +30,10 @@ import io.spring.initializr.generator.project.contributor.ProjectContributor;
 import org.springframework.util.FileCopyUtils;
 
 /**
- * {@link ProjectContributor} that contributes a single file, identified by a resource
- * pattern, to a generated project.
+ * {@link ProjectContributor} that contributes generatorConfig.xml file to a generated
+ * project.
  *
- * @author Andy Wilkinson
+ * @author Jayce Ma
  */
 public class GeneratorConfigXMLTemplateContributor implements ProjectContributor {
 
