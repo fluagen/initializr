@@ -16,10 +16,13 @@
 package io.spring.initializr.generator.spring.code.java;
 
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
+import java.util.Map;
 
 import io.spring.initializr.generator.io.template.TemplateRenderer;
+import io.spring.initializr.generator.language.SourceStructure;
 import io.spring.initializr.generator.project.ProjectDescription;
 import io.spring.initializr.generator.project.contributor.ProjectContributor;
 
@@ -29,6 +32,12 @@ import io.spring.initializr.generator.project.contributor.ProjectContributor;
  * @author Jayce Ma
  */
 public class UserModelJavaSourceCodeTemplateContributor implements ProjectContributor {
+
+	private final String subPackage = "api.model";
+
+	private final String sourceCodeName = "UserModel";
+
+	private final String template = "java/api/model/UserModel.java";
 
 	private final ProjectDescription description;
 
@@ -42,11 +51,16 @@ public class UserModelJavaSourceCodeTemplateContributor implements ProjectContri
 
 	@Override
 	public void contribute(Path projectRoot) throws IOException {
-		String templateName = "UserModel";
-		String subPackage = "api.model";
+		Map<String, Object> params = new HashMap<>();
+		SourceStructure sourceStructure = this.description.getBuildSystem().getMainSource(projectRoot,
+				this.description.getLanguage());
+		String packaging = this.description.getPackageName() + "." + this.subPackage;
+		Path sourceCodePath = sourceStructure.createSourceFile(packaging, this.sourceCodeName);
 
-		JavaTemplateHelper.render(this.description, this.templateRenderer, projectRoot, subPackage, templateName,
-				new HashMap<>());
+		params.put("rootPackage", this.description.getPackageName());
+
+		String code = this.templateRenderer.render(this.template, params);
+		Files.write(sourceCodePath, code.getBytes("UTF-8"));
 
 	}
 

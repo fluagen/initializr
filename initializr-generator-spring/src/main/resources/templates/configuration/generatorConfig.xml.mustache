@@ -1,43 +1,28 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-
 <!DOCTYPE generatorConfiguration
-        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
-        "https://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
-<!-- 配置生成器 -->
+  PUBLIC '-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN'
+  'https://mybatis.org/dtd/mybatis-generator-config_1_0.dtd'>
+  
 <generatorConfiguration>
-    <!--执行generator插件生成文件的命令：  mvn mybatis-generator:generate -e -->
-    <!-- 引入配置文件 -->
     <properties resource="application.properties"/>
-
-    <!-- 一个数据库一个context -->
     <context id="DB2Tables" targetRuntime="MyBatis3">
-        <commentGenerator>
-            <property name="suppressAllComments" value="true"/>
-        </commentGenerator>
-        <jdbcConnection driverClass="${spring.datasource.driver-class-name}"
-                        connectionURL="${spring.datasource.url}"
-                        userId="${spring.datasource.username}" password="${spring.datasource.password}">
-        </jdbcConnection>
+        <jdbcConnection connectionURL="${spring.datasource.url}" driverClass="${spring.datasource.driver-class-name}" password="${spring.datasource.password}" userId="${spring.datasource.username}"/>
         <javaTypeResolver>
             <property name="forceBigDecimals" value="false"/>
         </javaTypeResolver>
-
-        <javaModelGenerator targetPackage="com.das.moebel.dal.entity" targetProject="src/main/java">
-            <property name="enableSubPackages" value="true"/>
+        <javaModelGenerator targetPackage="{{rootPackage}}.dao.dataobject" targetProject="src/main/java">
+            <property name="enableSubPackages" value="false"/>
             <property name="trimStrings" value="true"/>
         </javaModelGenerator>
-
-        <sqlMapGenerator targetPackage="mybatis" targetProject="src/main/resources">
-            <property name="enableSubPackages" value="true"/>
+        <sqlMapGenerator targetPackage="mybatis/mapper" targetProject="src/main/resources">
+            <property name="enableSubPackages" value="false"/>
         </sqlMapGenerator>
-
-        <javaClientGenerator type="XMLMAPPER" targetPackage="com.das.moebel.dal.dao.mapper"
-                             targetProject="src/main/java">
-            <property name="enableSubPackages" value="true"/>
+        <javaClientGenerator targetPackage="{{rootPackage}}.dao.mapper" targetProject="src/main/java" type="MIXEDMAPPER">
+            <property name="enableSubPackages" value="false"/>
         </javaClientGenerator>
         
-        <table schema="public" tableName="sc_storage" domainObjectName="Storage">
-            <generatedKey column="id" sqlStatement="JDBC" identity="true"/>
+        <table domainObjectName="UserDO" schema="public" tableName="t_users">
+            <generatedKey column="id" identity="true" sqlStatement="JDBC"/>
         </table>
     </context>
 </generatorConfiguration>

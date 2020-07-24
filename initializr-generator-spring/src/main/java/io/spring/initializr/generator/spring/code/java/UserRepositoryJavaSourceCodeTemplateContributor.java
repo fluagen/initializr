@@ -16,11 +16,14 @@
 package io.spring.initializr.generator.spring.code.java;
 
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
 
+import io.spring.initializr.generator.buildsystem.Dependency;
 import io.spring.initializr.generator.io.template.TemplateRenderer;
+import io.spring.initializr.generator.language.SourceStructure;
 import io.spring.initializr.generator.project.ProjectDescription;
 import io.spring.initializr.generator.project.contributor.ProjectContributor;
 
@@ -30,6 +33,12 @@ import io.spring.initializr.generator.project.contributor.ProjectContributor;
  * @author Jayce Ma
  */
 public class UserRepositoryJavaSourceCodeTemplateContributor implements ProjectContributor {
+
+	private final String subPackage = "repository";
+
+	private final String sourceCodeName = "UserRepository";
+
+	private final String template = "java/repository/UserRepository.java";
 
 	private final ProjectDescription description;
 
@@ -43,14 +52,24 @@ public class UserRepositoryJavaSourceCodeTemplateContributor implements ProjectC
 
 	@Override
 	public void contribute(Path projectRoot) throws IOException {
-		String templateName = "UserRepository";
-		String subPackage = "repository";
-
+		Map<String, Dependency> dependencies = this.description.getRequestedDependencies();
 		Map<String, Object> params = new HashMap<>();
-		params.put("isJpa", true);
+		if (dependencies.containsKey("data-jpa")) {
+			params.put("hasDataJpaDependency", true);
+		}
 
-		JavaTemplateHelper.render(this.description, this.templateRenderer, projectRoot, subPackage, templateName,
-				params);
+		if (params.isEmpty()) {
+			return;
+		}
+		SourceStructure sourceStructure = this.description.getBuildSystem().getMainSource(projectRoot,
+				this.description.getLanguage());
+		String packaging = this.description.getPackageName() + "." + this.subPackage;
+		Path sourceCodePath = sourceStructure.createSourceFile(packaging, this.sourceCodeName);
+
+		params.put("rootPackage", this.description.getPackageName());
+
+		String code = this.templateRenderer.render(this.template, params);
+		Files.write(sourceCodePath, code.getBytes("UTF-8"));
 
 	}
 

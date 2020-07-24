@@ -1,13 +1,15 @@
 package {{rootPackage}}.dao.dataobject;
 
+{{#hasDataJpaDependency}}
 import javax.persistence.Entity;
+{{/hasDataJpaDependency}}
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-{{#isJpa}}
+{{#hasDataJpaDependency}}
 @Entity
-{{/isJpa}}
+{{/hasDataJpaDependency}}
 public class UserDO {
     private Long id;
     private String loginId;

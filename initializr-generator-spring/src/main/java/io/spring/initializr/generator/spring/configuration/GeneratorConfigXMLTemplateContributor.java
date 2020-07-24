@@ -43,8 +43,11 @@ public class GeneratorConfigXMLTemplateContributor implements ProjectContributor
 
 	private final TemplateRenderer templateRenderer;
 
+	private final ProjectDescription description;
+
 	public GeneratorConfigXMLTemplateContributor(ProjectDescription description, TemplateRenderer templateRenderer) {
 
+		this.description = description;
 		this.templateRenderer = templateRenderer;
 	}
 
@@ -58,6 +61,7 @@ public class GeneratorConfigXMLTemplateContributor implements ProjectContributor
 		}
 		String template = this.resourcePattern;
 		Map<String, Object> params = new HashMap<>();
+		params.put("rootPackage", this.description.getPackageName());
 		String code = this.templateRenderer.render(template, params);
 
 		FileCopyUtils.copy(code.getBytes("UTF-8"), Files.newOutputStream(output, StandardOpenOption.WRITE));

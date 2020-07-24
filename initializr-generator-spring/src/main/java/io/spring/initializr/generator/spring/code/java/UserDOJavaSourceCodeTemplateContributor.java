@@ -16,12 +16,14 @@
 package io.spring.initializr.generator.spring.code.java;
 
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
 
 import io.spring.initializr.generator.buildsystem.Dependency;
 import io.spring.initializr.generator.io.template.TemplateRenderer;
+import io.spring.initializr.generator.language.SourceStructure;
 import io.spring.initializr.generator.project.ProjectDescription;
 import io.spring.initializr.generator.project.contributor.ProjectContributor;
 
@@ -31,6 +33,12 @@ import io.spring.initializr.generator.project.contributor.ProjectContributor;
  * @author Jayce Ma
  */
 public class UserDOJavaSourceCodeTemplateContributor implements ProjectContributor {
+
+	private final String subPackage = "dao.dataobject";
+
+	private final String sourceCodeName = "UserDO";
+
+	private final String template = "java/dao/dataobject/UserDO.java";
 
 	private final ProjectDescription description;
 
@@ -46,20 +54,24 @@ public class UserDOJavaSourceCodeTemplateContributor implements ProjectContribut
 		Map<String, Dependency> dependencies = this.description.getRequestedDependencies();
 		Map<String, Object> params = new HashMap<>();
 		if (dependencies.containsKey("data-jpa")) {
-			params.put("isJpa", true);
+			params.put("hasDataJapDependency", true);
 		}
 		else if (dependencies.containsKey("mybatis")) {
-			params.put("isMybatis", true);
+			params.put("hasMybatisDependency", true);
 		}
 
 		if (params.isEmpty()) {
 			return;
 		}
-		String templateName = "UserDO";
-		String subPackage = "dao.dataobject";
+		SourceStructure sourceStructure = this.description.getBuildSystem().getMainSource(projectRoot,
+				this.description.getLanguage());
+		String packaging = this.description.getPackageName() + "." + this.subPackage;
+		Path sourceCodePath = sourceStructure.createSourceFile(packaging, this.sourceCodeName);
 
-		JavaTemplateHelper.render(this.description, this.templateRenderer, projectRoot, subPackage, templateName,
-				params);
+		params.put("rootPackage", this.description.getPackageName());
+
+		String code = this.templateRenderer.render(this.template, params);
+		Files.write(sourceCodePath, code.getBytes("UTF-8"));
 
 	}
 
