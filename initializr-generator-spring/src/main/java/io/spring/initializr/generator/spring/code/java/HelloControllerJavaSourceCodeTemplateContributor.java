@@ -33,11 +33,11 @@ import io.spring.initializr.generator.project.contributor.ProjectContributor;
  */
 public class HelloControllerJavaSourceCodeTemplateContributor implements ProjectContributor {
 
-	private final String subPackage = "controller";
+	private final String subPackage = "web";
 
 	private final String sourceCodeName = "HelloController";
 
-	private final String template = "java/controller/HelloController.java";
+	private final String template = "java/web/HelloController.java";
 
 	private final ProjectDescription description;
 
