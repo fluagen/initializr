@@ -4,6 +4,12 @@ spring.datasource.username=root
 spring.datasource.password=root
 spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
 {{/hasMysqlDependency}}
+{{#hasPostgresDependency}}
+spring.datasource.url=jdbc:postgresql://localhost:5432/demo
+spring.datasource.username=postgres
+spring.datasource.password=postgres
+spring.datasource.driver-class-name=org.postgresql.Driver
+{{/hasPostgresDependency}}
 
 {{#hasMybatisDependency}}
 mybatis.mapper-locations=classpath:mybatis/mapper/*.xml

@@ -51,7 +51,12 @@ public class DefaultMavenBuildCustomizer implements BuildCustomizer<MavenBuild> 
 		if (this.description.getRequestedDependencies().containsKey("mybatis")) {
 			build.plugins().add("org.mybatis.generator", "mybatis-generator-maven-plugin", (plugin) -> {
 				plugin.version("1.4.0");
-				plugin.dependency("mysql", "mysql-connector-java", "${mysql.version}");
+				if (this.description.getRequestedDependencies().containsKey("mysql")) {
+					plugin.dependency("mysql", "mysql-connector-java", "${mysql.version}");
+				}
+				if (this.description.getRequestedDependencies().containsKey("postgresql")) {
+					plugin.dependency("org.postgresql", "postgresql", "${postgresql.version}");
+				}
 			});
 		}
 

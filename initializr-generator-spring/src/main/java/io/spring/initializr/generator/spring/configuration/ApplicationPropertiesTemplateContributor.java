@@ -66,6 +66,9 @@ public class ApplicationPropertiesTemplateContributor implements ProjectContribu
 		if (dependencies.containsKey("mysql")) {
 			params.put("hasMysqlDependency", true);
 		}
+		if (dependencies.containsKey("postgresql")) {
+			params.put("hasPostgresDependency", true);
+		}
 		if (dependencies.containsKey("mybatis")) {
 			params.put("hasMybatisDependency", true);
 		}
